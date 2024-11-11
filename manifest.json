@@ -5,9 +5,9 @@
   "description": "Automatically rejects non-essential cookies on websites.",
   "permissions": ["scripting"],
   "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+    "16": "auto-cookie-rejector-icon.png",
+    "48": "auto-cookie-rejector-icon.png",
+    "128": "auto-cookie-rejector-icon.png"
   },
   "content_scripts": [
     {
@@ -17,7 +17,7 @@
     }
   ],
   "action": {
-    "default_icon": "icon.png",
+    "default_icon": "auto-cookie-rejector-icon.png",
     "default_popup": "popup.html"
   }
 }
