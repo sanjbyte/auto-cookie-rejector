@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     handleSecuriti();
     handleTermly();
     handleMultiStepBanner();
-    handleRadioButtonBanner(); // New function for radio button-style banners
+    handleRadioButtonBanner();
+    handleComplyAuto(); // Updated function for ComplyAuto cookie banner
   }
 
   // OneTrust cookie banner handling
@@ -59,6 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 1000);
     }
+  }
+
+  // ComplyAuto cookie banner handling
+  function handleComplyAuto() {
+    // Attempt to find and click "Deny Targeting Cookies" option
+    const denyTargetingButton = document.querySelector("button[data-cc-deny-targeting], button[aria-label='Deny Targeting Cookies'], button:contains('Deny Targeting')");
+    if (denyTargetingButton) {
+      denyTargetingButton.click();
+      console.log("ComplyAuto: Denied targeting cookies");
+    } else {
+      console.log("ComplyAuto: 'Deny Targeting' button not found");
+    }
+
+    // Attempt to click the "Save" or "Confirm" button if available
+    setTimeout(() => {
+      const saveButton = document.querySelector("button[aria-label='Save Preferences'], button[aria-label='Confirm Choices'], button:contains('Save')");
+      if (saveButton) {
+        saveButton.click();
+        console.log("ComplyAuto: Clicked 'Save Preferences' or 'Confirm Choices' button");
+      } else {
+        console.log("ComplyAuto: 'Save' or 'Confirm' button not found");
+      }
+    }, 1000);
   }
 
   // Generic handling for multi-step cookie banners
@@ -122,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   }
 
-  // New handler for radio button-based cookie banners
+  // Handler for radio button-based cookie banners
   function handleRadioButtonBanner() {
     const requiredOption = document.querySelector("input[type='radio'][aria-label*='Required'], input[type='radio'][aria-label*='Essential']");
     if (requiredOption) {
