@@ -18,10 +18,11 @@
     }
   ],
   "action": {
-    "default_icon": "auto-cookie-rejector-icon.png",
+    "default_icon": "auto-cookie-rejector-icon.png"
     "default_popup": "popup.html"
   },
-  "background":{
+  "background": {
     "service_worker": "background.js"
+  }
 }
-}
+
