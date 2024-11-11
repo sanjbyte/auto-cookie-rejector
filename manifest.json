@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Auto-Cookie Rejector",
+  "version": "1.0",
+  "description": "Automatically rejects non-essential cookies on websites.",
+  "permissions": ["scripting"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
