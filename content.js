@@ -1,45 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Define an array of selectors for common cookie rejection buttons with specific attributes
-  const selectors = [
-    "button[aria-label='Reject All']",
-    "button[aria-label='Reject cookies']",
-    "button[title='Reject All']",
-    "button.cookie-reject"  // Add any specific selector you find for certain sites
-  ];
-
-  // Function to find and click reject buttons
-  function rejectCookies() {
-    selectors.forEach(selector => {
-      const button = document.querySelector(selector);
-      if (button) {
-        button.click();
-        console.log("Cookie rejected using selector:", selector); // Debug log
-        observer.disconnect(); // Stop observing after clicking
-      }
-    });
-
-    // Additional approach: Find buttons by checking their text content
-    const buttons = document.querySelectorAll("button");
-    buttons.forEach(button => {
-      const text = button.textContent.toLowerCase();
-      if (text.includes("reject") || text.includes("decline") || text.includes("only necessary")) {
-        button.click();
-        console.log("Cookie rejected based on button text:", button.textContent); // Debug log
-        observer.disconnect(); // Stop observing after clicking
-      }
-    });
+  // Step 1: Click the "Manage Cookies" button if available
+  function openCookieSettings() {
+    const manageButton = document.querySelector("button[aria-label='Manage Cookies']");
+    if (manageButton) {
+      manageButton.click();
+      console.log("Clicked 'Manage Cookies' button");
+      setTimeout(toggleCookieOptions, 1000); // Wait a moment for the settings menu to open
+    }
   }
 
-  // Initial attempt to reject cookies on page load
-  rejectCookies();
+  // Step 2: Toggle off each cookie category within the settings menu
+  function toggleCookieOptions() {
+    const toggles = [
+      "button[aria-label='Disable functional cookies']", // Replace with the actual selector for each toggle
+      "button[aria-label='Disable performance cookies']",
+      "button[aria-label='Disable targeting cookies']"
+    ];
 
-  // MutationObserver to detect dynamically loaded cookie banners
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach(() => {
-      rejectCookies(); // Call rejectCookies if new elements are added to the DOM
+    toggles.forEach(selector => {
+      const toggleButton = document.querySelector(selector);
+      if (toggleButton && !toggleButton.classList.contains("disabled")) {
+        toggleButton.click();
+        console.log("Disabled cookies using selector:", selector);
+      }
     });
-  });
 
-  // Start observing the document for changes
-  observer.observe(document.body, { childList: true, subtree: true });
+    // Move to the final step of confirming or saving the choices
+    setTimeout(confirmCookieSettings, 1000);
+  }
+
+  // Step 3: Click the "Save" or "Confirm" button to apply settings
+  function confirmCookieSettings() {
+    const saveButton = document.querySelector("button[aria-label='Save settings']");
+    if (saveButton) {
+      saveButton.click();
+      console.log("Clicked 'Save settings' button");
+    } else {
+      console.log("No 'Save settings' button found");
+    }
+  }
+
+  // Initial call to start the cookie rejection process
+  openCookieSettings();
 });
