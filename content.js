@@ -1,3 +1,10 @@
+console.log("Auto Cookie Rejector script loaded.");
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("DOM fully loaded, executing cookie rejection script.");
+
+  // Existing rejectCookies function and other code here
+});
 document.addEventListener('DOMContentLoaded', () => {
   // Main function to start rejecting cookies on known platforms and generic banners
   function rejectCookies() {
