@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Cookie Rejector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            width: 200px;
+        }
+        h1 {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Auto Cookie Rejector</h1>
+    <p>Automatically rejecting cookies on supported sites.</p>
+    <button id="manualReject">Run Cookie Reject</button>
+    <script>
+        document.getElementById('manualReject').addEventListener('click', () => {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                chrome.scripting.executeScript({
+                    target: { tabId: tabs[0].id },
+                    function: rejectCookies
+                });
+            });
+        });
+
+        function rejectCookies() {
+            console.log("Manual reject initiated.");
+            // Include the code from content.js here if you'd like manual activation
+        }
+    </script>
+</body>
+</html>
