@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Main function to start rejecting cookies on known platforms
+  // Main function to start rejecting cookies on known platforms and generic banners
   function rejectCookies() {
     handleOneTrust();
     handleOsano();
     handleSecuriti();
     handleTermly();
-    handleMultiStepBanner(); // Generic function for multi-step cookie banners
+    handleMultiStepBanner();
+    handleRadioButtonBanner(); // New function for radio button-style banners
   }
 
   // OneTrust cookie banner handling
@@ -62,15 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Generic handling for multi-step cookie banners
   function handleMultiStepBanner() {
-    // Step 1: Open each section to access cookie options (e.g., Functional, Performance, Marketing)
     const sections = [
       "button[aria-label='Functional']",
       "button[aria-label='Performance & Analytics']",
       "button[aria-label='Marketing & Social Media']",
       "button[aria-label='Preferences']",
       "button[aria-label='Settings']",
-      ".cookie-preferences", // Generic class used by some banners
-      ".settings-link", // Generic class for settings links
+      ".cookie-preferences",
+      ".settings-link"
     ];
 
     sections.forEach((selector, index) => {
@@ -78,18 +78,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sectionButton) {
         sectionButton.click();
         console.log(`Multi-Step Banner: Opened section with selector ${selector}`);
-        setTimeout(disableMultiStepCookies, 1000 * (index + 1)); // Delay to allow each tab to load
+        setTimeout(disableMultiStepCookies, 1000 * (index + 1));
       }
     });
 
-    // Step 2: Disable cookies in the opened sections
     function disableMultiStepCookies() {
       const disableSelectors = [
         "button[aria-label='Disable']",
-        "button.toggle-off", // Commonly used toggle-off class
-        "input[type='checkbox'][aria-label*='disable']", // Checkbox approach
-        ".cookie-toggle-off", // Some banners use specific toggle classes
-        ".disable-cookie" // Generic class name
+        "button.toggle-off",
+        "input[type='checkbox'][aria-label*='disable']",
+        ".cookie-toggle-off",
+        ".disable-cookie"
       ];
 
       disableSelectors.forEach(selector => {
@@ -101,15 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Step 3: Click the "Confirm" or "Save" button to apply settings
     setTimeout(() => {
       const confirmSelectors = [
         "button[aria-label='Confirm My Choice']",
         "button[aria-label='Save Settings']",
         "button[aria-label='Confirm Choices']",
         "button.confirm-preferences",
-        ".save-preferences", // Generic selector for save button
-        ".confirm-cookie-settings" // Generic confirm class
+        ".save-preferences",
+        ".confirm-cookie-settings"
       ];
 
       confirmSelectors.forEach(selector => {
@@ -121,7 +119,24 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log("Multi-Step Banner: Confirm button not found for selector", selector);
         }
       });
-    }, 5000); // Delay for all sections and options to be processed
+    }, 5000);
+  }
+
+  // New handler for radio button-based cookie banners
+  function handleRadioButtonBanner() {
+    const requiredOption = document.querySelector("input[type='radio'][aria-label*='Required'], input[type='radio'][aria-label*='Essential']");
+    if (requiredOption) {
+      requiredOption.click();
+      console.log("Radio Button Banner: Selected 'Required' or 'Essential' option");
+    }
+
+    const saveButton = document.querySelector("button[aria-label='Save'], button[aria-label='Confirm'], button:contains('Save')");
+    if (saveButton) {
+      saveButton.click();
+      console.log("Radio Button Banner: Clicked 'Save' or 'Confirm' button");
+    } else {
+      console.log("Radio Button Banner: 'Save' or 'Confirm' button not found");
+    }
   }
 
   // Initial call to start rejecting cookies
