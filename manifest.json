@@ -4,6 +4,7 @@
   "version": "1.0",
   "description": "Automatically rejects non-essential cookies on websites.",
   "permissions": ["scripting"],
+  "host_permissions": ["*://*/*"],
   "icons": {
     "16": "auto-cookie-rejector-icon.png",
     "48": "auto-cookie-rejector-icon.png",
