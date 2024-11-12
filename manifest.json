@@ -6,7 +6,9 @@
   "description": "Automatically rejects non-essential cookies on websites.",
   "permissions": [
     "scripting",
-    "activeTab"
+    "activeTab",
+    "storage",
+    "webNavigation"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -18,9 +20,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "run_at": "document_idle"
+      "run_at": "document_end",
+      "all_frames": true
     }
   ],
   "action": {
