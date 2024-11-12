@@ -91,20 +91,30 @@ function handleTermly() {
 
 // ComplyAuto cookie banner handling
 function handleComplyAuto() {
-    // Attempt to find and click "Deny Targeting Cookies" option
-    const denyTargetingButton = document.querySelector("button[data-cc-deny-targeting], button[aria-label='Deny Targeting Cookies'], button:contains('Deny Targeting')");
-    if (denyTargetingButton) {
-        denyTargetingButton.click();
+    // Replace the invalid selector with valid ones and add text search
+    const denyButtons = Array.from(document.getElementsByTagName('button')).filter(button => 
+        button.hasAttribute('data-cc-deny-targeting') ||
+        button.getAttribute('aria-label') === 'Deny Targeting Cookies' ||
+        button.textContent.toLowerCase().includes('deny targeting')
+    );
+    
+    if (denyButtons.length > 0) {
+        denyButtons[0].click();
         console.log("ComplyAuto: Denied targeting cookies");
     } else {
         console.log("ComplyAuto: 'Deny Targeting' button not found");
     }
 
-    // Attempt to click the "Save" or "Confirm" button if available
+    // Similarly for the save button
     setTimeout(() => {
-        const saveButton = document.querySelector("button[aria-label='Save Preferences'], button[aria-label='Confirm Choices'], button:contains('Save')");
-        if (saveButton) {
-            saveButton.click();
+        const saveButtons = Array.from(document.getElementsByTagName('button')).filter(button => 
+            button.getAttribute('aria-label') === 'Save Preferences' ||
+            button.getAttribute('aria-label') === 'Confirm Choices' ||
+            button.textContent.toLowerCase().includes('save')
+        );
+        
+        if (saveButtons.length > 0) {
+            saveButtons[0].click();
             console.log("ComplyAuto: Clicked 'Save Preferences' or 'Confirm Choices' button");
         } else {
             console.log("ComplyAuto: 'Save' or 'Confirm' button not found");
