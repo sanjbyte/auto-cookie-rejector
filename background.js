@@ -1,17 +1,19 @@
-chrome.action.onClicked.addListener((tab) => {
+// Add the service worker registration
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("Extension installed");
+});
+
+// Modify the existing click listener
+chrome.action.onClicked.addListener(async (tab) => {
   console.log("Extension icon clicked, attempting to inject content.js");
 
-  chrome.scripting.executeScript(
-    {
+  try {
+    await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       files: ["content.js"]
-    },
-    () => {
-      if (chrome.runtime.lastError) {
-        console.error("Error injecting content.js:", chrome.runtime.lastError.message);
-      } else {
-        console.log("content.js injected successfully");
-      }
-    }
-  );
+    });
+    console.log("content.js injected successfully");
+  } catch (err) {
+    console.error("Error injecting content.js:", err.message);
+  }
 });
