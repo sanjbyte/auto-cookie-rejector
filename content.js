@@ -4,19 +4,21 @@ console.log("Auto Cookie Rejector script loaded.");
 function initCookieRejector() {
     console.log("Initializing cookie rejection script.");
     
-    // Initial check for existing banners
-    rejectCookies();
-    
-    // Watch for new elements being added to the page
-    const observer = new MutationObserver((mutations) => {
+    // Add a small delay before first check
+    setTimeout(() => {
         rejectCookies();
-    });
-    
-    // Start observing the document with the configured parameters
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+        
+        // Watch for new elements being added to the page
+        const observer = new MutationObserver((mutations) => {
+            rejectCookies();
+        });
+        
+        // Start observing the document with the configured parameters
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }, 1000); // 1 second delay
 }
 
 // Change the initialization
