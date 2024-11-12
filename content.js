@@ -39,10 +39,36 @@ function rejectCookies() {
 
 // OneTrust cookie banner handling
 function handleOneTrust() {
-    const rejectButton = document.querySelector("button#onetrust-reject-all-handler");
+    // Try multiple possible selectors for the reject button
+    const rejectSelectors = [
+        "button#onetrust-reject-all-handler",
+        "button.onetrust-reject-all-handler",
+        "button[aria-label='Reject Cookies']",
+        ".ot-pc-refuse-all-handler",
+        "button:has-text('Reject Cookies')"  // This won't work, we'll use an alternative approach
+    ];
+
+    // First try direct selectors
+    let rejectButton = null;
+    for (const selector of rejectSelectors) {
+        rejectButton = document.querySelector(selector);
+        if (rejectButton) break;
+    }
+
+    // If no button found, try finding by text content
+    if (!rejectButton) {
+        const buttons = Array.from(document.getElementsByTagName('button'));
+        rejectButton = buttons.find(button => 
+            button.textContent.toLowerCase().includes('reject') && 
+            button.textContent.toLowerCase().includes('cookies')
+        );
+    }
+
     if (rejectButton) {
         rejectButton.click();
         console.log("OneTrust: Rejected cookies");
+    } else {
+        console.log("OneTrust: Reject button not found");
     }
 }
 
