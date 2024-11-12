@@ -181,7 +181,7 @@ function handleRadioButtonBanner() {
         console.log("Radio Button Banner: Selected 'Required' or 'Essential' option");
     }
 
-    const saveButton = document.querySelector("button[aria-label='Save'], button[aria-label='Confirm'], button:contains('Save')");
+    const saveButton = document.querySelector("button[aria-label='Save'], button[aria-label='Confirm']");
     if (saveButton) {
         saveButton.click();
         console.log("Radio Button Banner: Clicked 'Save' or 'Confirm' button");
