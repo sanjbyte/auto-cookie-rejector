@@ -41,29 +41,39 @@ function rejectCookies() {
 
 // OneTrust cookie banner handling
 function handleOneTrust() {
-    // Try multiple possible selectors for the reject button
+    // Updated selectors list - removed invalid selector and added more common variations
     const rejectSelectors = [
         "button#onetrust-reject-all-handler",
         "button.onetrust-reject-all-handler",
         "button[aria-label='Reject Cookies']",
         ".ot-pc-refuse-all-handler",
-        "button:has-text('Reject Cookies')"  // This won't work, we'll use an alternative approach
+        "#onetrust-reject-button",
+        "[data-purpose='reject-all']"
     ];
 
     // First try direct selectors
     let rejectButton = null;
     for (const selector of rejectSelectors) {
-        rejectButton = document.querySelector(selector);
-        if (rejectButton) break;
+        try {
+            rejectButton = document.querySelector(selector);
+            if (rejectButton) break;
+        } catch (e) {
+            console.log(`Invalid selector skipped: ${selector}`);
+        }
     }
 
-    // If no button found, try finding by text content
+    // Enhanced text content search with error handling
     if (!rejectButton) {
-        const buttons = Array.from(document.getElementsByTagName('button'));
-        rejectButton = buttons.find(button => 
-            button.textContent.toLowerCase().includes('reject') && 
-            button.textContent.toLowerCase().includes('cookies')
-        );
+        try {
+            const buttons = Array.from(document.getElementsByTagName('button'));
+            rejectButton = buttons.find(button => {
+                const text = button.textContent.toLowerCase();
+                return (text.includes('reject') || text.includes('deny')) && 
+                       (text.includes('cookie') || text.includes('all'));
+            });
+        } catch (e) {
+            console.log("Error during text content search:", e);
+        }
     }
 
     if (rejectButton) {
@@ -122,6 +132,7 @@ function handleComplyAuto() {
     // Replace the invalid selector with valid ones and add text search
     const denyButtons = Array.from(document.getElementsByTagName('button')).filter(button => 
         button.hasAttribute('data-cc-deny-targeting') ||
+        
         button.getAttribute('aria-label') === 'Deny Targeting Cookies' ||
         button.textContent.toLowerCase().includes('deny targeting')
     );
